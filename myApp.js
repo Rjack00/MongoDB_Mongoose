@@ -1,7 +1,32 @@
 require('dotenv').config();
-//Testing
+const mongoose = require('mongoose');
 
-let Person;
+
+//MongoDB Connection \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+console.log('MONGO_URI from .env: ', process.env.MONGO_URI);
+
+mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://0077rjack_db:Cluster0_54321@cluster0.voojxmz.mongodb.net/Test?retryWrites=true&w=majority&appName=Cluster0', {useNewUrlParser: true, useUnifiedTopology: true});
+
+mongoose.connection.on('connected', () => console.log('Connected to MongoDB!'));
+mongoose.connection.on('error', (err) => console.error('Connection error:', err));
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+const personSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  age: Number,
+  favoriteFoods: [String]
+});
+
+let Person = mongoose.model('Person', personSchema);
+
+const person = new Person({name: "Ralph Man", age: 30, favoriteFoods: ['Pizza', 'Steak']});
+person.save((err, data) => {
+  if (err) console.error(err);
+  else console.log('Saved: ', data);
+});
 
 const createAndSavePerson = (done) => {
   done(null /*, data*/);
