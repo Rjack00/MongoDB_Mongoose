@@ -11,6 +11,7 @@ mongoose.connection.on('connected', () => console.log('Connected to MongoDB!'));
 mongoose.connection.on('error', (err) => console.error('Connection error:', err));
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+// Create a Model (personSchema then Person = mongoose.model) \\\\
 const personSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -21,24 +22,13 @@ const personSchema = new mongoose.Schema({
 });
 
 let Person = mongoose.model('Person', personSchema);
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-const person = new Person(
-  { 
-    name: "Ralph Man", 
-    age: 30, 
-    favoriteFoods: ['Pizza', 'Steak']
-  }
-);
-
-person.save((err, data) => {
-  if (err) console.error(err);
-  else console.log('Saved: ', data);
-});
-
-
+// Create and Save a Record of a Model \\\\\\\\\\\\\\\\\\\
 const createAndSavePerson = (done) => {
   const person = new Person(
-    {name: "Joe Cool",
+    {
+      name: "Joe Cool",
       age: 60,
       favoriteFoods: ["Lasagne"]
     }
@@ -49,50 +39,80 @@ const createAndSavePerson = (done) => {
   })
   
 };
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+// Create Many Records with model.create() \\\\\\\\\\\\\\\\
+const arrayOfPeople = [
+  {
+    name: "Joe Blow",
+    age: 35,
+    favoriteFoods: ["Hot dogs", "Cheetos"]
+  },
+  {
+    name: "Jane Doe",
+    age: 22,
+    favoriteFoods: ["Cereal"]
+  },
+  {
+    name: "Interesting Man",
+    age: 50,
+    favoriteFoods: ["Modelo", "Tequila"]
+  }
+];
 
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  Person.create(arrayOfPeople, (err, data) => {
+    if(err) return done(err);
+    done(null, data);
+  });
 };
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+// Use Model.find() to Search Your Database \\\\\\\\\\\\\\
+function personName () {
+Person.find({name: "Jane Doe"})
+};
 const findPeopleByName = (personName, done) => {
   done(null /*, data*/);
 };
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-const findOneByFood = (food, done) => {
-  done(null /*, data*/);
-};
+// const findOneByFood = (food, done) => {
+//   done(null /*, data*/);
+// };
 
-const findPersonById = (personId, done) => {
-  done(null /*, data*/);
-};
+// const findPersonById = (personId, done) => {
+//   done(null /*, data*/);
+// };
 
-const findEditThenSave = (personId, done) => {
-  const foodToAdd = "hamburger";
+// const findEditThenSave = (personId, done) => {
+//   const foodToAdd = "hamburger";
 
-  done(null /*, data*/);
-};
+//   done(null /*, data*/);
+// };
 
-const findAndUpdate = (personName, done) => {
-  const ageToSet = 20;
+// const findAndUpdate = (personName, done) => {
+//   const ageToSet = 20;
 
-  done(null /*, data*/);
-};
+//   done(null /*, data*/);
+// };
 
-const removeById = (personId, done) => {
-  done(null /*, data*/);
-};
+// const removeById = (personId, done) => {
+//   done(null /*, data*/);
+// };
 
-const removeManyPeople = (done) => {
-  const nameToRemove = "Mary";
+// const removeManyPeople = (done) => {
+//   const nameToRemove = "Mary";
 
-  done(null /*, data*/);
-};
+//   done(null /*, data*/);
+// };
 
-const queryChain = (done) => {
-  const foodToSearch = "burrito";
+// const queryChain = (done) => {
+//   const foodToSearch = "burrito";
 
-  done(null /*, data*/);
-};
+//   done(null /*, data*/);
+// };
+
 
 /** **Well Done !!**
 /* You completed these challenges, let's go celebrate !
@@ -103,11 +123,11 @@ const queryChain = (done) => {
 exports.PersonModel = Person;
 exports.createAndSavePerson = createAndSavePerson;
 exports.findPeopleByName = findPeopleByName;
-exports.findOneByFood = findOneByFood;
-exports.findPersonById = findPersonById;
-exports.findEditThenSave = findEditThenSave;
-exports.findAndUpdate = findAndUpdate;
+// exports.findOneByFood = findOneByFood;
+// exports.findPersonById = findPersonById;
+// exports.findEditThenSave = findEditThenSave;
+// exports.findAndUpdate = findAndUpdate;
 exports.createManyPeople = createManyPeople;
-exports.removeById = removeById;
-exports.removeManyPeople = removeManyPeople;
-exports.queryChain = queryChain;
+// exports.removeById = removeById;
+// exports.removeManyPeople = removeManyPeople;
+// exports.queryChain = queryChain;
