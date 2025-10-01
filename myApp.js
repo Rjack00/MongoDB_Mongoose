@@ -69,17 +69,23 @@ const createManyPeople = (arrayOfPeople, done) => {
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 // Use Model.find() to Search Your Database \\\\\\\\\\\\\\
-function personName () {
-Person.find({name: "Jane Doe"})
-};
 const findPeopleByName = (personName, done) => {
-  done(null /*, data*/);
+  Person.find({name: personName}, (err, data) => {
+    if(err) return done(err);
+    done(null, data);
+  });
 };
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-// const findOneByFood = (food, done) => {
-//   done(null /*, data*/);
-// };
+// Use model.findOne() to Return a Single Matching Document from Your Database
+const findOneByFood = (food, done) => {
+  Person.findOne({ favoriteFoods: food }, (err, data) => {
+    if (err) return done(err);
+    done(null, data);
+  });
+};
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 
 // const findPersonById = (personId, done) => {
 //   done(null /*, data*/);
@@ -123,7 +129,7 @@ const findPeopleByName = (personName, done) => {
 exports.PersonModel = Person;
 exports.createAndSavePerson = createAndSavePerson;
 exports.findPeopleByName = findPeopleByName;
-// exports.findOneByFood = findOneByFood;
+exports.findOneByFood = findOneByFood;
 // exports.findPersonById = findPersonById;
 // exports.findEditThenSave = findEditThenSave;
 // exports.findAndUpdate = findAndUpdate;
