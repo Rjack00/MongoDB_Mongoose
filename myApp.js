@@ -86,16 +86,34 @@ const findOneByFood = (food, done) => {
 };
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+// Use model.findById() to Search Your Database By _id \\\\\\\
+const findPersonById = (personId, done) => {
+  Person.findById(personId, (err, data) => {
+    if(err) return done(err);
+    done(null, data);
+  })
+  
+};
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-// const findPersonById = (personId, done) => {
-//   done(null /*, data*/);
-// };
+// Perform Classic Updates by Running Find, Edit, then Save \\\
 
-// const findEditThenSave = (personId, done) => {
-//   const foodToAdd = "hamburger";
+const findEditThenSave = (personId, done) => {
+  const foodToAdd = "hamburger";
+  Person.findById(personId, (err, person) => {
+    if(err) return done(new Error(`findById failed: ${err.message}`));
+    if(!person) return done(new Error(`Person not found`));
 
-//   done(null /*, data*/);
-// };
+    person.favoriteFoods.push(foodToAdd);
+
+    person.save((err, updatedPerson) => {
+      if(err) return done(new Error(`Save failed: ${err.message}`));
+      done(null, updatedPerson);
+    });
+  });
+};
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 
 // const findAndUpdate = (personName, done) => {
 //   const ageToSet = 20;
@@ -130,8 +148,9 @@ exports.PersonModel = Person;
 exports.createAndSavePerson = createAndSavePerson;
 exports.findPeopleByName = findPeopleByName;
 exports.findOneByFood = findOneByFood;
-// exports.findPersonById = findPersonById;
-// exports.findEditThenSave = findEditThenSave;
+exports.findPersonById = findPersonById;
+exports.findEditThenSave = findEditThenSave;
+exports.findEdit = findEditThenSave;
 // exports.findAndUpdate = findAndUpdate;
 exports.createManyPeople = createManyPeople;
 // exports.removeById = removeById;
