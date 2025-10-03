@@ -270,7 +270,7 @@ router.post("/find-one-update", function (req, res, next) {
   });
 });
 
-const removeOne = require("./myApp.js").removeById;
+const removeById = require("./myApp.js").removeById;
 router.post("/remove-one-person", function (req, res, next) {
   Person.remove({}, function (err) {
     if (err) {
@@ -285,7 +285,7 @@ router.post("/remove-one-person", function (req, res, next) {
         return next(err);
       }
       try {
-        removeOne(pers._id, function (err, data) {
+        removeById(pers._id, function (err, data) {
           clearTimeout(t);
           if (err) {
             return next(err);
