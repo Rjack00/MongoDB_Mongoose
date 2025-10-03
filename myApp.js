@@ -114,16 +114,25 @@ const findEditThenSave = (personId, done) => {
 };
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+//Perform New Updates on a Document Using model.findOneAndUpdate()
+const findAndUpdate = (personName, done) => {
+  const ageToSet = 20;
+  Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, (err, updatedPerson) => {
+    if(err) return done(err);
+    if(!updatedPerson) return done(new Error(`Person not found ${err.message}`));
+    done(null, updatedPerson);
+  });
+};
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-// const findAndUpdate = (personName, done) => {
-//   const ageToSet = 20;
-
-//   done(null /*, data*/);
-// };
-
-// const removeById = (personId, done) => {
-//   done(null /*, data*/);
-// };
+// Delete One Document Using model.findByIdAndRemove \\\\\\\\\\\\\
+const removeById = (personId, done) => {
+  Person.findOneAndRemove({_id: personId}, (err, deletedPerson) => {//findOneAndRemove is deprecated, replaced by findOneAndDelete
+    if(err) return done(err);
+    done(null, deletedPerson);
+  })
+};
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 // const removeManyPeople = (done) => {
 //   const nameToRemove = "Mary";
@@ -151,8 +160,8 @@ exports.findOneByFood = findOneByFood;
 exports.findPersonById = findPersonById;
 exports.findEditThenSave = findEditThenSave;
 exports.findEdit = findEditThenSave;
-// exports.findAndUpdate = findAndUpdate;
+exports.findAndUpdate = findAndUpdate;
 exports.createManyPeople = createManyPeople;
-// exports.removeById = removeById;
+exports.removeById = removeById;
 // exports.removeManyPeople = removeManyPeople;
 // exports.queryChain = queryChain;
