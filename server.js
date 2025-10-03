@@ -364,7 +364,7 @@ router.post("/remove-many-people", function (req, res, next) {
   });
 });
 
-const chain = require("./myApp.js").queryChain;
+const queryChain = require("./myApp.js").queryChain;
 router.post("/query-tools", function (req, res, next) {
   let t = setTimeout(() => {
     next({ message: "timeout" });
@@ -378,7 +378,7 @@ router.post("/query-tools", function (req, res, next) {
         return next(err);
       }
       try {
-        chain(function (err, data) {
+        queryChain(function (err, data) {
           clearTimeout(t);
           if (err) {
             return next(err);
