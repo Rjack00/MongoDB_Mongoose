@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 //MongoDB Connection \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 console.log('MONGO_URI from .env: ', process.env.MONGO_URI);
 
-mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://0077rjack_db:Cluster0_54321@cluster0.voojxmz.mongodb.net/Test?retryWrites=true&w=majority&appName=Cluster0', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 mongoose.connection.on('connected', () => console.log('Connected to MongoDB!'));
 mongoose.connection.on('error', (err) => console.error('Connection error:', err));
@@ -39,6 +39,7 @@ const createAndSavePerson = (done) => {
   })
   
 };
+
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // Create Many Records with model.create()
 
@@ -60,12 +61,14 @@ const arrayOfPeople = [
   }
 ];
 
-const createManyPeople = (arrayOfPeople, done) => {
-  Person.create(arrayOfPeople, (err, data) => {
+const createManyPeople = (peopleArray, done) => {
+  const dataToSave = peopleArray || arrayOfPeople;
+  Person.create(dataToSave, (err, data) => {
     if(err) return done(err);
     done(null, data);
   });
 };
+
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // Use Model.find() to Search Your Database
 
@@ -135,13 +138,24 @@ const removeById = (personId, done) => {
 // Delete Many Documents with model.remove()
 
 const removeManyPeople = (done) => {
-  const nameToRemove = "Mary";
+  const nameToRemove = "Mario";
   Person.remove({name: nameToRemove}, (err, peopleRemoved) => {
     if(err) return done(err);
     if(!peopleRemoved) done(new Error(`Name not found`));
     done(null, peopleRemoved);
   })
 };
+
+// removeManyPeople adjusted to receive an array \\\\\\\\\\\\\\\\
+// const removeManyPeople = (arr, done) => {
+//   const names = arr ? arr.map(person => person.name) : [];
+//   Person.remove({ name: {$in: names} }, (err, peopleRemoved) => {
+//     if(err) return done(err);
+//     if(!peopleRemoved) done(new Error(`Name not found`));
+//     done(null, peopleRemoved);
+//   })
+// };
+
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // Chain Search Query Helpers to Narrow Search Results
 
